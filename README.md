@@ -1,5 +1,5 @@
 # Ethereum-MoneyMoney
-Fetches amount and value of privately held Ethereum address via etherscan.io and returns it as a security.  
+Fetches amount and value of privately held Ethereum address and (a few) Erc20-Tokens via etherscan.io and returns it as a security.  
 This can be also be used to track your cold storage.
 
 ![MoneyMoney screenshot with Ethereum Balance](screens/ethereum-screen.png)
@@ -13,7 +13,9 @@ You can get a signed version of this extension from
 
 Once downloaded, move `Ether.lua` to your MoneyMoney Extensions folder.
 
-**Note:** This extension requires MoneyMoney **Version 2.2.18** or newer.
+**Note:** This extension requires MoneyMoney **Version 2.3.4** or newer.
+
+**Note 2:** It takes a few minutes to query all tokens (there might be a better way to do it ; feel free to change it). So if you don't have any tokens -> use Ether.lua instead.
 
 ## Account Setup
 
