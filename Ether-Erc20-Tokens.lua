@@ -1,14 +1,14 @@
--- Inofficial Ethereum Extension for MoneyMoney
+-- Inofficial Ethereum with Erc20-Tokens Extension for MoneyMoney
 -- Fetches Ether quantity for address via etherscan API
 -- Fetches Ether price in EUR via cryptocompare API
 -- Returns cryptoassets as securities
 --
--- Username: Ethereum Adresses comma seperated
+-- Username: Ethereum with Erc20-Tokens Adresses comma seperated
 -- Password: Etherscan API-Key
 
 -- MIT License
 
--- Copyright (c) 2017 Jacubeit
+-- Copyright (c) 2018 crietzschel
 
 -- Permission is hereby granted, free of charge, to any person obtaining a copy
 -- of this software and associated documentation files (the "Software"), to deal
@@ -31,17 +31,76 @@
 
 WebBanking{
   version = 0.1,
-  description = "Include your Ether as cryptoportfolio in MoneyMoney by providing a Etheradresses (usernme, comma seperated) and etherscan-API-Key (Password)",
-  services= { "Ethereum" }
+  description = "Include your ETH & Tokens as cryptoportfolio in MoneyMoney by providing a Etheradresses (username, comma seperated) and etherscan-API-Key (Password)",
+  services= { "Ethereum with Erc20-Tokens" }
 }
 
 local ethAddresses
 local etherscanApiKey
 local connection = Connection()
-local currency = "EUR" -- fixme: make dynamik if MM enables input field
+local mmcurrency = "EUR" -- fixme: make dynamik if MM enables input field
+
+
+local symbolContractaddress = {
+  TRX = "0xf230b790e05390fc8295f4d3f60332c93bed42e2", -- Tronix
+  ICX = "0xb5a5f22694352c15b00323844ad545abb2b11028", -- ICON
+  PPT = "0xd4fa1460f537bb9085d22c7bccb5dd450ef28e3a", -- Populous Platform
+  OMG = "0xd26114cd6ee289accf82350c8d8487fedb8a0c07", -- OMGToken
+  SNT = "0x744d70fdbe2ba4cf95131626614a1763df805b9e", -- Status Network
+  VERI = "0x8f3470a7388c05ee4e7af3d01d8c722b0ff52374", -- Veritaseum
+  REP = "0xe94327d07fc17907b4db788e5adf2ed424addff6", -- Reputation
+  ZRX = "0xe41d2489571d322189246dafa5ebde1f4699f498", -- 0x Protocol Token
+  DGD = "0xe0b7927c4af23765cb51314a0e0521a9645f0e2a", -- Digix DAO
+  KNC = "0xdd974d5c2e2928dea5f71b9825b8b646686bd200", -- Kyber Network Crystal
+  BAT = "0x0d8775f648430679a709e98d2b0cb6250d2887ef", -- Basic Attention Token
+  PLR = "0xe3818504c1b32bf1557b16c238b2e01fd3149c17", -- PILLAR
+  LRC = "0xef68e7c694f40c8202821edf525de3782458639f", -- loopring
+  DCN = "0x08d32b0da63e2c3bcf8019c9c5d849d7a9d791e6", -- Dentacoin
+  DENT = "0x3597bfd533a99c9aa083587b074434e61eb0a258", -- DENT
+  GNT = "0xa74476443119a942de498590fe1f2454d7d4ac0d", -- Golem Network Token
+  CND = "0xd4c435f5b09f855c3317c8524cb1f586e42795fa", -- Cindicator Token
+  KIN = "0x818fc6c2ec5986bc6e2cbf00939d90556ab12ce5", -- Kin
+  BNT = "0x1f573d6fb3f13d689ff844b4ce37794d79a7ff1c", -- Bancor Network Token
+  PAY = "0xb97048628db6b661d4c2aa833e95dbe1a905b280", -- TenX Pay Token
+  GNO = "0x6810e776880c02933d47db1b9fc05908e5386b96", -- Gnosis Token
+  ICN = "0x888666ca69e0f178ded6d75b5726cee99a87d698", -- ICONOMI
+  ANT = "0x960b236a07cf122663c4303350609a66a7b288c0", -- Aragon Network Token
+  POE = "0x0e0989b1f9b8a38983c2ba8053269ca62ec9b195", -- Po.et
+  CVC = "0x41e5560054824ea6b0732e656e3ad64e20e94e45", -- Civic
+  STORJ = "0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac" -- StorjToken
+
+
+  -- more to add ...
+  -- use something like this ugly wget
+  -- wget -O - "https://api.ethplorer.io/getTop?apiKey=freekey&criteria=cap" | tr '{' '\n' | cut -d'"' -f4,8,14 | tr '"' ';'  |  awk -v FS=';' '{ print "   "$3" = \""$1"≥\", -- "$2 }' | tr -d '≥' | grep -v "marketCapUsd"
+  -- symbol = "0x48f775efbe4f5ece6e0df2f7b5932df56823b990", -- R token
+  -- symbol = "0x039b5649a59967e3e936d7471f9c3700100ee1ab", -- Kucoin Shares
+  -- symbol = "0x419c4db4b9e25d6db2ad9691ccb832c8d9fda05e", -- Dragon
+  -- symbol = "0xbf2179859fc6d5bee9bf9158632dc51678a4100e", -- ELF Token
+  -- symbol = "0x618e75ac90b12c6049ba3b27f5d5f8651b0037f6", -- QASH
+  -- symbol = "0x4156d3342d5c385a87d264f90653733592000581", -- Salt
+  -- symbol = "0x4ceda7906a5ed2179785cd3a40a69ee8bc99c466", -- AION
+  -- symbol = "0xbbb1bd2d741f05e144e6c4517676a15554fd4b8d", -- FunFair
+  -- symbol = "0xfa1a856cfa3409cfa145fa4e20eb270df3eb21ab", -- IOSToken
+  -- symbol = "0x8eb24319393716668d768dcec29356ae9cffe285", -- SingularityNET Token
+  -- symbol = "0x595832f8fc6bf59c85c527fec3740a1b7a361269", -- PowerLedger
+  -- symbol = "0x8f8221afbb33998d8584a2b05749ba73c37a938a", -- Request Token
+  -- symbol = "0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4", -- Enigma
+  -- symbol = "0x99ea4db9ee77acd40b119bd1dc4e33e1c070b80d", -- Quantstamp Token
+  -- symbol = "0x514910771af9ca656af840dff83e8264ecf986ca", -- ChainLink Token
+  -- symbol = "0x255aa6df07540cb5d3d297f0d0d4d84cb52bc8e6", -- Raiden Token
+  -- symbol = "0x12480e24eb5bec1a9d4369cab6a80cad3c0a377a", -- Substratum
+  -- symbol = "0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c", -- Enjin Coin
+  -- symbol = "0x20e94867794dba030ee287f1406e100d03c84cd3", -- DEW
+  -- symbol = "0xc42209accc14029c1012fb5680d95fbd6036e2a0", -- PayPie
+  -- symbol = "0xd234bf2410a0009df9c3c63b610c09738f18ccd7", -- Dynamic Trading Rights
+  -- symbol = "0xf7920b0768ecb20a123fac32311d07d193381d6f", -- Time New Bank
+
+}
+
 
 function SupportsBank (protocol, bankCode)
-  return protocol == ProtocolWebBanking and bankCode == "Ethereum"
+  return protocol == ProtocolWebBanking and bankCode == "Ethereum with Erc20-Tokens"
 end
 
 function InitializeSession (protocol, bankCode, username, username2, password, username3)
@@ -51,8 +110,8 @@ end
 
 function ListAccounts (knownAccounts)
   local account = {
-    name = "Ethereum",
-    accountNumber = "Crypto Asset Ethereum",
+    name = "Ethereum with Erc20-Tokens",
+    accountNumber = "Crypto Asset Ethereum with Erc20-Tokens",
     currency = currency,
     portfolio = true,
     type = "AccountTypePortfolio"
@@ -63,19 +122,42 @@ end
 
 function RefreshAccount (account, since)
   local s = {}
-  prices = requestEthPrice()
 
   for address in string.gmatch(ethAddresses, '([^,]+)') do
+
+    -- Request Ethereum ETH itself
+    fsym = "ETH"
     weiQuantity = requestWeiQuantityForEthAddress(address)
     ethQuantity = convertWeiToEth(weiQuantity)
+    prices = requestPrice(fsym)
 
     s[#s+1] = {
-      name = address,
+      name = fsym .. " (" .. address .. ")",
       currency = nil,
       market = "cryptocompare",
       quantity = ethQuantity,
-      price = prices["EUR"],
+      price = prices[mmcurrency],
     }
+
+    -- Request Token Balance and Price
+    for fsym, contractaddress in pairs(symbolContractaddress) do
+
+      balance = requestTokenBalanceForEthAddress(address, contractaddress)
+
+      -- TODO get many prices at once into an array and just look into it here
+      prices = requestPrice(fsym)
+
+      if tonumber(balance) > 0 then
+        s[#s+1] = {
+          name = fsym .. " (" .. address .. ")",
+          currency = nil,
+          market = "cryptocompare",
+          quantity = balance,
+          price = prices[mmcurrency],
+        }
+      end
+
+    end
   end
 
   return {securities = s}
@@ -85,12 +167,19 @@ function EndSession ()
 end
 
 
--- Querry Functions
-function requestEthPrice()
-  content = connection:request("GET", cryptocompareRequestUrl(), {})
+-- Query Functions
+function requestPrice(fsym)
+  content = connection:request("GET", cryptocompareRequestUrl(fsym), {})
   json = JSON(content)
 
   return json:dictionary()
+end
+
+function requestTokenBalanceForEthAddress(ethAddress, contractaddress)
+  content = connection:request("GET", etherscanTokenRequestUrl(ethAddress, contractaddress), {})
+  json = JSON(content)
+
+  return json:dictionary()["result"]
 end
 
 function requestWeiQuantityForEthAddress(ethAddress)
@@ -102,13 +191,19 @@ end
 
 
 -- Helper Functions
-function convertWeiToEth(wei)
-  return wei / 1000000000000000000 
+function contractaddressForSymbol(fsym)
+  return symbolContractaddress[fsym] or fsym
 end
 
-function cryptocompareRequestUrl()
-  return "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=EUR,USD"
-end 
+function convertWeiToEth(wei)
+  return wei / 1000000000000000000
+end
+
+function cryptocompareRequestUrl(fsym)
+  minApiRoot = "https://min-api.cryptocompare.com/data/price?fsym="
+  params = "&tsyms=" .. mmcurrency
+  return minApiRoot .. fsym .. params
+end
 
 function etherscanRequestUrl(ethAddress)
   etherscanRoot = "https://api.etherscan.io/api?"
@@ -119,3 +214,13 @@ function etherscanRequestUrl(ethAddress)
   return etherscanRoot .. params .. address .. apiKey
 end
 
+function etherscanTokenRequestUrl(ethAddress, contractaddress)
+  etherscanRoot = "https://api.etherscan.io/api?"
+  params = "&module=account&action=tokenbalance"
+  contract = "&contractaddress=" .. contractaddress
+  address = "&address=" .. ethAddress
+  tag = "&tag=latest"
+  apiKey = "&apikey=" .. etherscanApiKey
+
+  return etherscanRoot .. params .. contract .. address .. tag .. apiKey
+end
