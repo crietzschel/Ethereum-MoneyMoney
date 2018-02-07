@@ -1,4 +1,4 @@
-# Ethereum-MoneyMoney
+# Ethereum with Erc20-Tokens Extension for MoneyMoney
 Fetches amount and value of privately held Ethereum address and (a few) Erc20-Tokens via etherscan.io and returns it as a security.  
 This can be also be used to track your cold storage.
 
