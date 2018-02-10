@@ -30,7 +30,7 @@
 
 
 WebBanking{
-  version = 0.1,
+  version = 0.2,
   description = "Include your ETH & Tokens as cryptoportfolio in MoneyMoney by providing a Etheradresses (username, comma seperated) and etherscan-API-Key (Password)",
   services= { "Ethereum with Erc20-Tokens" }
 }
@@ -67,35 +67,19 @@ local symbolContractaddress = {
   ANT = "0x960b236a07cf122663c4303350609a66a7b288c0", -- Aragon Network Token
   POE = "0x0e0989b1f9b8a38983c2ba8053269ca62ec9b195", -- Po.et
   CVC = "0x41e5560054824ea6b0732e656e3ad64e20e94e45", -- Civic
+  SVD = "0xbdEB4b83251Fb146687fa19D1C660F99411eefe3", -- Savedroid
+  QSP = "0x99ea4db9ee77acd40b119bd1dc4e33e1c070b80d", -- Quantstamp Token
+  OST = "0x2C4e8f2D746113d0696cE89B35F0d8bF88E0AEcA", -- SimpleToken
+  SALT = "0x4156d3342d5c385a87d264f90653733592000581", -- Salt
+  ELF = "0xbf2179859fc6d5bee9bf9158632dc51678a4100e", -- ELF Token
+  FUN = "0xbbb1bd2d741f05e144e6c4517676a15554fd4b8d", -- FunFair
+  IOST = "0xfa1a856cfa3409cfa145fa4e20eb270df3eb21ab", -- IOSToken
   STORJ = "0xb64ef51c888972c908cfacf59b47c1afbc0ab8ac" -- StorjToken
-
 
   -- more to add ...
   -- use something like this ugly wget
   -- wget -O - "https://api.ethplorer.io/getTop?apiKey=freekey&criteria=cap" | tr '{' '\n' | cut -d'"' -f4,8,14 | tr '"' ';'  |  awk -v FS=';' '{ print "   "$3" = \""$1"≥\", -- "$2 }' | tr -d '≥' | grep -v "marketCapUsd"
-  -- symbol = "0x48f775efbe4f5ece6e0df2f7b5932df56823b990", -- R token
-  -- symbol = "0x039b5649a59967e3e936d7471f9c3700100ee1ab", -- Kucoin Shares
-  -- symbol = "0x419c4db4b9e25d6db2ad9691ccb832c8d9fda05e", -- Dragon
-  -- symbol = "0xbf2179859fc6d5bee9bf9158632dc51678a4100e", -- ELF Token
-  -- symbol = "0x618e75ac90b12c6049ba3b27f5d5f8651b0037f6", -- QASH
-  -- symbol = "0x4156d3342d5c385a87d264f90653733592000581", -- Salt
-  -- symbol = "0x4ceda7906a5ed2179785cd3a40a69ee8bc99c466", -- AION
-  -- symbol = "0xbbb1bd2d741f05e144e6c4517676a15554fd4b8d", -- FunFair
-  -- symbol = "0xfa1a856cfa3409cfa145fa4e20eb270df3eb21ab", -- IOSToken
-  -- symbol = "0x8eb24319393716668d768dcec29356ae9cffe285", -- SingularityNET Token
-  -- symbol = "0x595832f8fc6bf59c85c527fec3740a1b7a361269", -- PowerLedger
-  -- symbol = "0x8f8221afbb33998d8584a2b05749ba73c37a938a", -- Request Token
-  -- symbol = "0xf0ee6b27b759c9893ce4f094b49ad28fd15a23e4", -- Enigma
-  -- symbol = "0x99ea4db9ee77acd40b119bd1dc4e33e1c070b80d", -- Quantstamp Token
-  -- symbol = "0x514910771af9ca656af840dff83e8264ecf986ca", -- ChainLink Token
-  -- symbol = "0x255aa6df07540cb5d3d297f0d0d4d84cb52bc8e6", -- Raiden Token
-  -- symbol = "0x12480e24eb5bec1a9d4369cab6a80cad3c0a377a", -- Substratum
-  -- symbol = "0xf629cbd94d3791c9250152bd8dfbdf380e2a3b9c", -- Enjin Coin
-  -- symbol = "0x20e94867794dba030ee287f1406e100d03c84cd3", -- DEW
-  -- symbol = "0xc42209accc14029c1012fb5680d95fbd6036e2a0", -- PayPie
-  -- symbol = "0xd234bf2410a0009df9c3c63b610c09738f18ccd7", -- Dynamic Trading Rights
-  -- symbol = "0xf7920b0768ecb20a123fac32311d07d193381d6f", -- Time New Bank
-
+  -- or look around in web 
 }
 
 
